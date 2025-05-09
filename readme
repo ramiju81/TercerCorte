@@ -1,0 +1,6 @@
+docker-compose run web django-admin startproject backfront .
+
+docker-compose up --build
+
+docker-compose run web python manage.py startapp pedidos
+

@@ -1,0 +1,25 @@
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+    environment:
+      - DEBUG=1
+      - DJANGO_SECRET_KEY=your-secret-key-here
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/backend_db
+
+  db:
+    image: postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTRGES_DB=backend_db
+      - POSTRGES_USER=postgres
+      - POSTRGRES_PASSWORD=postgres
+
+volumes:
+  postgres_data:      
