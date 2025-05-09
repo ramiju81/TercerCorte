@@ -64,5 +64,5 @@ Este proyecto ha sido desarrollado como parte de mi proceso de aprendizaje y dem
 
 ---  
 
-f"📅 **Actividad Reciente**  
+📅 **Actividad Reciente**  
 🔹 Última actualización: 2025-05-09 
