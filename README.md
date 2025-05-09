@@ -2,7 +2,7 @@
 
 ![Estado](https://img.shields.io/badge/👨‍💻_En_Desarrollo-yellow)  
 ![Licencia](https://img.shields.io/badge/Licencia-MIT-green)  
-![Actividad](https://img.shields.io/badge/🔄_Última_Actividad-2025-05-09-lightgrey)  
+![Actividad](https://img.shields.io/badge/%F0%9F%94%84_%C3%9Altima_Actividad-2025--05--09-lightgrey)  
 
 ## 📋 Descripción
 
