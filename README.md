@@ -1,8 +1,8 @@
-📚 # TERCERCORTE  
+<h1 style="font-size: 2em">📊 TERCERCORTE</h1>  
 
-![Estado](https://img.shields.io/badge/Estado-Académico-blue)  
+![Estado](https://img.shields.io/badge/👨‍💻_En_Desarrollo-yellow)  
 ![Licencia](https://img.shields.io/badge/Licencia-MIT-green)  
-![Última Actualización](https://img.shields.io/badge/Actualización-2025-05-09-lightgrey)  
+![Actividad](https://img.shields.io/badge/🔄_Última_Actividad-2025-05-09-lightgrey)  
 
 ## 📋 Descripción
 
