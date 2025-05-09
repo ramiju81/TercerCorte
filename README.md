@@ -43,7 +43,7 @@ Solución backend desarrollada en Python para [propósito general del proyecto].
 © 2025 Julian Ramirez. Todos los derechos reservados.  
 Prohibido el uso comercial sin autorización expresa.  
 
-## 📬 Contacto  
+## 📬 Contacto   
 
 **Julian Alberto Ramirez**  
 💻 Desarrollador Full Stack | ⚙️ Enfoque en Automatización | 🧩 Resolviendo problemas con software  
@@ -64,5 +64,5 @@ Este proyecto ha sido desarrollado como parte de mi proceso de aprendizaje y dem
 
 ---  
 
-📅 **Actividad Reciente**  
-🔹 Última actualización: {datetime.datetime.now().strftime('%Y-%m-%d')}  
+f"📅 **Actividad Reciente**  
+🔹 Última actualización: 2025-05-09 
