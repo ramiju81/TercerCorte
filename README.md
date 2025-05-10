@@ -35,6 +35,8 @@ Solución backend desarrollada en Python para [propósito general del proyecto].
     └── 📂 pedidos/
         migrations/
         template/
+        templates/
+        __pycache__/
 
 *Nota: Se muestran solo los directorios principales*
 
