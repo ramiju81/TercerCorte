@@ -3,7 +3,7 @@
 
 
 ![Estado](https://img.shields.io/badge/Estado-👨‍💻_Desarrollo-yellow)
-![Última Actualización](https://img.shields.io/badge/Última_Actualización-2025-05-14-lightgray)
+![Última Actualización](https://img.shields.io/badge/Última_Actualización-2025-05-17-lightgray)
 ![Licencia](https://img.shields.io/badge/Licencia-Creative_Commons-blue)
 
 
@@ -25,7 +25,6 @@ Proyecto académico desarrollado para la universidad.
         └── 📂 __pycache__/
     └── 📂 pedidos/
         └── 📂 migrations/
-        └── 📂 template/
         └── 📂 templates/
         └── 📂 __pycache__/
 

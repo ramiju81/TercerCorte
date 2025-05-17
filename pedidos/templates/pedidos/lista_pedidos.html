@@ -2,11 +2,348 @@
 <html lang="es">
 <head>
     <title> Lista Pedidos</title>
+    <style>
+    body {
+      font-family: Arial, sans-serif;
+      background:rgba(255, 255, 255, 0.87);
+      margin: 2rem;
+    }
+    .tabla-pedidos {
+      max-width: 900px;
+      margin: auto;
+      background: white;
+      padding: 1.5rem 2rem;
+      border-radius: 10px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #222;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+    }
+    th, td {
+      border-bottom: 1px solid #ddd;
+      padding: 0.6rem 0.75rem;
+      text-align: left;
+      position: relative;
+      user-select: none;
+    }
+.dropdown,
+.dropdown input[type="text"],
+.dropdown li {
+  color: black !important;
+}
+td:nth-child(2),
+td:nth-child(3),
+td:nth-child(4) {
+  text-align: right;
+}
+    th {
+      background: #2e7d32;
+      color: white;
+      font-weight: 600;
+      font-size: 0.95rem;
+      vertical-align: top;
+    }
+    td {
+      font-size: 0.9rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    tbody tr:hover {
+      background: #f1f1f1;
+    }
 
+    /* Botón del filtro (que reemplaza el texto del encabezado) */
+    .filter-button {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #e0f2f1;
+      color: #004d40;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 5px;
+      width: 100%;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 0.9rem;
+      position: relative;
+    }
+    .filter-button svg {
+      width: 14px;
+      height: 14px;
+      margin-left: 6px;
+      flex-shrink: 0;
+      transition: transform 0.2s ease;
+    }
+    .filter-button.open svg {
+      transform: rotate(180deg);
+    }
 
+    .dropdown {
+      position: absolute;
+      background: white;
+      border: 1px solid #ccc;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+      z-index: 1000;
+      margin-top: 6px;
+      border-radius: 6px;
+      width: 200px;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    .dropdown input[type="text"] {
+      width: 100%;
+      padding: 6px;
+      border: none;
+      border-bottom: 1px solid #ddd;
+      box-sizing: border-box;
+      outline: none;
+    }
+    .dropdown ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .dropdown li {
+      padding: 6px 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+    .dropdown li:hover {
+      background-color:rgb(241, 241, 241);
+    }
+    .dropdown input[type="checkbox"] {
+      margin-right: 8px;
+    }
+    </style>
 </head>
 <body>
+<div class="tabla-pedidos">
+  <h2 style="margin-bottom: 1rem;">📋 Lista de Pedidos</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>
+          <button class="filter-button" data-key="producto">
+            Producto
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="#004d40" d="M7 10l5 5 5-5H7z"/></svg>
+          </button>
+        </th>
+        <th>
+          <button class="filter-button" data-key="precio">
+            Precio
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="#004d40" d="M7 10l5 5 5-5H7z"/></svg>
+          </button>
+        </th>
+        <th>
+          <button class="filter-button" data-key="cantidad">
+            Cantidad
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="#004d40" d="M7 10l5 5 5-5H7z"/></svg>
+          </button>
+        </th>
+        <th>
+          <button class="filter-button" data-key="total">
+            Total
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="#004d40" d="M7 10l5 5 5-5H7z"/></svg>
+          </button>
+        </th>
+      </tr>
+    </thead>
+    <tbody id="tbodyPedidos"></tbody>
+  </table>
+</div>
 
-    <h1>Lista Pedidos</h1>
+<script>
+
+  const pedidos = [
+    {producto: 'Manzanas', precio: 1200.5, cantidad: 10},
+    {producto: 'Bananas', precio: 800, cantidad: 5},
+    {producto: 'Naranjas', precio: 1500, cantidad: 7},
+    {producto: 'Pera', precio: 1100.25, cantidad: 3},
+    {producto: 'Sandía', precio: 2500, cantidad: 1},
+    {producto: 'Melón', precio: 3000, cantidad: 2},
+    {producto: 'Durazno', precio: 1700, cantidad: 8},
+    {producto: 'Uvas', precio: 2200, cantidad: 4},
+    {producto: 'Piña', precio: 2800, cantidad: 6}
+  ];
+  pedidos.forEach(p => p.total = p.precio * p.cantidad);
+
+const filtros = {
+  producto: new Set(),
+  precio: new Set(),
+  cantidad: new Set(),
+  total: new Set()
+};
+
+const tbody = document.getElementById('tbodyPedidos');
+renderizarTabla(pedidos);
+
+function renderizarTabla(data) {
+  tbody.innerHTML = '';
+  if (data.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#888">No se encontraron pedidos.</td></tr>';
+    return;
+  }
+  data.forEach(p => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${p.producto}</td>
+      <td>$${p.precio.toFixed(2)}</td>
+      <td>${p.cantidad}</td>
+      <td>$${p.total.toFixed(2)}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+function aplicarFiltros() {
+  let filtrados = pedidos.filter(p => {
+    if (filtros.producto.size && !filtros.producto.has(p.producto)) return false;
+    if (filtros.precio.size && !filtros.precio.has(p.precio.toFixed(2))) return false;
+    if (filtros.cantidad.size && !filtros.cantidad.has(p.cantidad.toString())) return false;
+    if (filtros.total.size && !filtros.total.has(p.total.toFixed(2))) return false;
+    return true;
+  });
+  renderizarTabla(filtrados);
+  actualizarOpcionesFiltros(filtrados);
+}
+
+function actualizarOpcionesFiltros(dataFiltrada) {
+  // Por cada filtro, actualizar las opciones disponibles según dataFiltrada
+
+  document.querySelectorAll('.filter-button').forEach(boton => {
+    const key = boton.getAttribute('data-key');
+    const dropdown = boton.parentElement.querySelector('.dropdown');
+    if (!dropdown) return;
+
+    // Obtener nuevos valores posibles según dataFiltrada para esta key
+    const valores = [...new Set(dataFiltrada.map(p => {
+      if (key === 'precio' || key === 'total') return p[key].toFixed(2);
+      return p[key].toString();
+    }))];
+
+    const ul = dropdown.querySelector('ul');
+    if (!ul) return;
+
+    // Actualizar cada li: mostrar solo si su valor está en valores, y mantener checked solo si la opción sigue válida
+    [...ul.children].forEach(li => {
+      const checkbox = li.querySelector('input[type="checkbox"]');
+      if (!checkbox) return;
+      if (valores.includes(checkbox.value)) {
+        li.style.display = '';
+      } else {
+        li.style.display = 'none';
+        // Si la opción ya no es válida, quitarla del filtro si está seleccionada
+        if (checkbox.checked) {
+          checkbox.checked = false;
+          filtros[key].delete(checkbox.value);
+        }
+      }
+    });
+  });
+}
+
+function abrirDropdown(boton, key) {
+  cerrarDropdowns();
+
+  // Obtén valores dinámicos según filtros aplicados, pero sin contar el filtro actual para que pueda elegir cualquier opción
+  let dataFiltradaParaOpciones = pedidos.filter(p => {
+    // Excluir el filtro actual para no bloquear opciones
+    if (key !== 'producto' && filtros.producto.size && !filtros.producto.has(p.producto)) return false;
+    if (key !== 'precio' && filtros.precio.size && !filtros.precio.has(p.precio.toFixed(2))) return false;
+    if (key !== 'cantidad' && filtros.cantidad.size && !filtros.cantidad.has(p.cantidad.toString())) return false;
+    if (key !== 'total' && filtros.total.size && !filtros.total.has(p.total.toFixed(2))) return false;
+    return true;
+  });
+
+  const valores = [...new Set(dataFiltradaParaOpciones.map(p => {
+    if (key === 'precio' || key === 'total') return p[key].toFixed(2);
+    return p[key].toString();
+  }))];
+
+  const dropdown = document.createElement('div');
+  dropdown.className = 'dropdown';
+
+  const inputContainer = document.createElement('div');
+  inputContainer.style.display = 'flex';
+  inputContainer.style.alignItems = 'center';
+  inputContainer.style.padding = '6px';
+
+  const inputBusqueda = document.createElement('input');
+  inputBusqueda.type = 'text';
+  inputBusqueda.placeholder = 'Buscar...';
+  inputBusqueda.style.flex = '1';
+
+  const okButton = document.createElement('button');
+  okButton.innerHTML = '✔️';
+  okButton.style.marginLeft = '8px';
+  okButton.style.border = 'none';
+  okButton.style.background = 'transparent';
+  okButton.style.cursor = 'pointer';
+  okButton.style.fontSize = '16px';
+  okButton.title = 'Cerrar';
+
+  okButton.onclick = () => cerrarDropdowns();
+
+  inputContainer.appendChild(inputBusqueda);
+  inputContainer.appendChild(okButton);
+
+  const ul = document.createElement('ul');
+  valores.forEach(valor => {
+    const li = document.createElement('li');
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.value = valor;
+    checkbox.checked = filtros[key].has(valor);
+    checkbox.onchange = () => {
+      if (checkbox.checked) filtros[key].add(valor);
+      else filtros[key].delete(valor);
+      aplicarFiltros();
+    };
+    li.appendChild(checkbox);
+    li.appendChild(document.createTextNode(valor));
+    ul.appendChild(li);
+  });
+
+  inputBusqueda.oninput = () => {
+    [...ul.children].forEach(li => {
+      li.style.display = li.textContent.toLowerCase().includes(inputBusqueda.value.toLowerCase()) ? '' : 'none';
+    });
+  };
+
+  dropdown.appendChild(inputContainer);
+  dropdown.appendChild(ul);
+  boton.parentElement.appendChild(dropdown);
+  boton.classList.add('open');
+
+  document.addEventListener('click', function outsideClick(e) {
+    if (!dropdown.contains(e.target) && !boton.contains(e.target)) {
+      cerrarDropdowns();
+      document.removeEventListener('click', outsideClick);
+    }
+  });
+}
+
+function cerrarDropdowns() {
+  document.querySelectorAll('.dropdown').forEach(d => d.remove());
+  document.querySelectorAll('.filter-button').forEach(b => b.classList.remove('open'));
+}
+
+document.querySelectorAll('.filter-button').forEach(boton => {
+  boton.addEventListener('click', e => {
+    e.stopPropagation();
+    const key = boton.getAttribute('data-key');
+    abrirDropdown(boton, key);
+  });
+});
+  </script>
 </body>
 </html>

@@ -2,11 +2,150 @@
 <html lang="es">
 <head>
     <title> Crear Pedidos</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4f6f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
 
+    .pedido-container {
+      background: white;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      max-width: 400px;
+      width: 100%;
+    }
 
+    .pedido-container h2 {
+      margin-bottom: 1rem;
+      text-align: center;
+      color: #333;
+    }
+    .pedido-container h1 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 1rem;
+    }
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: bold;
+      color: #555;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 0.6rem;
+      border: 1px solid #ccc;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+    }
+
+    /* Alineo a la derecha los inputs de precio, cantidad y total */
+    #precio, #cantidad, #total {
+      text-align: right;
+    }
+
+    .form-group input:disabled {
+      background: #eee;
+    }
+
+    .btn-crear {
+    width: 150px;
+    margin: 0 auto;
+    display: block;
+    padding: 0.8rem;
+    background: #4caf50;
+    border: none;
+    border-radius: 0.5rem;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+    }
+    .btn-crear:hover {
+      background: #43a047;
+    }
+  </style>
 </head>
 <body>
+      <div class="pedido-container">
+    <h1>Crear Pedido</h1>
+    <div class="form-group">
+      <label for="producto">Producto</label>
+      <input type="text" id="producto" placeholder="Nombre del producto" />
+    </div>
+    <div class="form-group">
+      <label for="precio">Precio</label>
+      <input type="number" id="precio" placeholder="0.00" step="0.01" oninput="this.value=this.value.replace(/[^0-9.]/g,'')" />
+    </div>
+    <div class="form-group">
+      <label for="cantidad">Cantidad</label>
+      <input type="number" id="cantidad" placeholder="0" oninput="this.value=this.value.replace(/[^0-9]/g,'')" />
+    </div>
+    <div class="form-group">
+      <label for="total">Total</label>
+      <input type="number" id="total" placeholder="0.00" disabled />
+    </div>
+    <button class="btn-crear" onclick="crearPedido()">Crear Pedido</button>
+  </div>
 
-    <h1>Crear Pedidos</h1>
+  <script>
+    const precioInput = document.getElementById('precio');
+    const cantidadInput = document.getElementById('cantidad');
+    const totalInput = document.getElementById('total');
+
+    precioInput.addEventListener('input', actualizarTotal);
+    cantidadInput.addEventListener('input', actualizarTotal);
+
+    function actualizarTotal() {
+      const precio = parseFloat(precioInput.value) || 0;
+      const cantidad = parseInt(cantidadInput.value) || 0;
+      const total = precio * cantidad;
+      totalInput.value = total.toFixed(2);
+    }
+
+    function crearPedido() {
+      const producto = document.getElementById('producto').value.trim();
+      const precio = parseFloat(document.getElementById('precio').value);
+      const cantidad = parseInt(document.getElementById('cantidad').value);
+      const total = precio * cantidad;
+
+      if (!producto || isNaN(precio) || isNaN(cantidad)) {
+        alert('Por favor, completa todos los campos correctamente.');
+        return;
+      }
+
+      const tabla = document.getElementById('tbodyPedidos');
+      const fila = tabla.insertRow();
+
+      fila.insertCell().textContent = tabla.rows.length;
+      fila.insertCell().textContent = producto;
+      fila.insertCell().textContent = precio.toFixed(2);
+      fila.insertCell().textContent = cantidad;
+      fila.insertCell().textContent = total.toFixed(2);
+
+      actualizarFiltros(); // Para refrescar los filtros
+      limpiarFormulario();
+    }
+
+    function limpiarFormulario() {
+      document.getElementById('producto').value = '';
+      document.getElementById('precio').value = '';
+      document.getElementById('cantidad').value = '';
+      document.getElementById('total').value = '';
+    }
+  </script>
 </body>
 </html>
