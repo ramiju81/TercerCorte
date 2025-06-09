@@ -1,6 +1,6 @@
 # 📊 TERCERCORTE
 
-![Estado](https://img.shields.io/badge/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BB_En_Desarrollo-yellow) ![Licencia](https://img.shields.io/badge/Licencia-🔒%20Privada-red) ![Actualización](https://img.shields.io/badge/🔄_Última_actividad-2025--06--07%2019:29-lightgrey)
+![Estado](https://img.shields.io/badge/%F0%9F%91%A8%E2%80%8D%F0%9F%92%BB_En_Desarrollo-yellow) ![Licencia](https://img.shields.io/badge/Licencia-🔒%20Privada-red) ![Actualización](https://img.shields.io/badge/🔄_Última_actividad-2025--06--08%2019:48-lightgrey)
 
 ## 📋 Descripción
 
@@ -53,4 +53,4 @@ Este trabajo demuestra:
 ---
 📅 **Historial de Versiones**
 🔹 Versión actual: 1.0.0
-🔹 Última actualización: 2025-06-07 19:29
+🔹 Última actualización: 2025-06-08 19:48
